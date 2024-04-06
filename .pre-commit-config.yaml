@@ -1,0 +1,75 @@
+---
+ci:
+  autofix_prs: false
+  skip:
+    - 'yamllint'
+    - 'markdown-link-check'
+    - 'markdownlint'
+    - 'ansible-lint'
+#    - 'pyspelling'
+
+repos:
+  - repo: 'https://github.com/ansible/ansible-lint'
+    rev: 'v24.2.1'
+    hooks:
+      - name: 'ansible-lint'
+        additional_dependencies:
+          # https://github.com/pre-commit/pre-commit/issues/1526
+          - 'ansible-core>=2.15'
+        always_run: true
+        description: 'This hook runs ansible-lint.'
+        entry: 'python3 -m ansiblelint -v --force-color'
+        id: 'ansible-lint'
+        language: 'python'
+        # do not pass files to ansible-lint, see:
+        # https://github.com/ansible/ansible-lint/issues/611
+        pass_filenames: false
+        language_version: '3.11'
+
+  - repo: 'https://github.com/pre-commit/pre-commit-hooks'
+    rev: 'v4.5.0'
+    hooks:
+      - id: 'check-executables-have-shebangs'
+      - id: 'check-merge-conflict'
+        args:
+          - '--assume-in-merge'
+      - id: 'check-json'
+      - id: 'check-shebang-scripts-are-executable'
+      - id: 'check-symlinks'
+      - id: 'check-toml'
+      - id: 'check-xml'
+      - id: 'debug-statements'
+      - id: 'destroyed-symlinks'
+      - id: 'detect-private-key'
+      - id: 'mixed-line-ending'
+        args:
+          - '--fix=no'
+      - id: 'pretty-format-json'
+        args:
+          - '--no-sort-keys'
+          - '--indent=2'
+      - id: 'trailing-whitespace'
+        args:
+          - '--markdown-linebreak-ext=md'
+
+  - repo: 'https://github.com/adrienverge/yamllint.git'
+    rev: 'v1.35.1'
+    hooks:
+      - id: 'yamllint'
+        pass_filenames: true
+        verbose: true
+
+  - repo: 'https://github.com/tcort/markdown-link-check.git'
+    rev: 'v3.12.1'
+    hooks:
+      - id: 'markdown-link-check'
+        pass_filenames: true
+        verbose: true
+
+  - repo: 'https://github.com/igorshubovych/markdownlint-cli'
+    rev: 'v0.39.0'
+    hooks:
+      - id: 'markdownlint'
+        verbose: true
+        pass_filenames: true
+...

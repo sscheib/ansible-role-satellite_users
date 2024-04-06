@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  role_name: 'satellite_users'
+  namespace: 'sscheib'
+  author: 'Steffen Scheib'
+  description: 'This role allows to create, delete and modify Satellite users'
+  issue_tracker_url: 'https://github.com/sscheib/ansible-role-satellite_users/issues'
+  license: 'GPL-2.0-or-later'
+  min_ansible_version: '2.12'
+  platforms:
+    - name: 'EL'
+      versions:
+        - '9'
+        - '8'
+
+  galaxy_tags:
+    - 'satellite'
+    - 'katello'
+    - 'user'
+dependencies: []
+...

@@ -1,0 +1,37 @@
+---
+- name: 'users | Create/Update/Delete users'
+  redhat.satellite.user:
+    login: '{{ __t_user.login }}'
+    username: '{{ _satellite_username }}'
+    password: '{{ _satellite_password }}'
+    server_url: '{{ _satellite_server_url }}'
+    validate_certs: '{{ _satellite_validate_certs }}'
+    admin: '{{ __t_user.admin | default(omit) }}'
+    auth_source: '{{ __t_user.auth_source | default(omit) }}'
+    default_location: '{{ __t_user.default_location | default(omit) }}'
+    default_organization: '{{ __t_user.default_organization | default(omit) }}'
+    description: '{{ __t_user.description | default(omit) }}'
+    firstname: '{{ __t_user.firstname | default(omit) }}'
+    lastname: '{{ __t_user.lastname | default(omit) }}'
+    locale: '{{ __t_user.locale | default(omit) }}'
+    locations: '{{ __t_user.locations | default(omit) }}'
+    mail: '{{ __t_user.mail | default(omit) }}'
+    organizations: '{{ __t_user.organizations | default(omit) }}'
+    roles: '{{ __t_user.roles | default(omit) }}'
+    state: '{{ __t_user.state | default(omit) }}'
+    timezone: '{{ __t_user.timezone | default(omit) }}'
+    user_password: '{{ __t_user.user_password | default(omit) }}'
+  loop: '{{ _sat_users }}'
+  loop_control:
+    loop_var: '__t_user'
+    label: '{{ __t_user.login }}'
+  no_log: >-
+    {{
+      true
+      if __t_user.user_password is defined
+      and __t_user.user_password != ''
+      and __t_user.user_password != None
+      else
+      false
+    }}
+...

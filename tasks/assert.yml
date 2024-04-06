@@ -1,0 +1,117 @@
+---
+- name: 'assert | Ensure _sat_quiet_assert is defined properly'
+  ansible.builtin.assert:
+    that:
+      - "lookup('ansible.builtin.vars', __t_var) is defined"
+      - "lookup('ansible.builtin.vars', __t_var) is boolean"
+      - "lookup('ansible.builtin.vars', __t_var) | bool | string == lookup('ansible.builtin.vars', __t_var) | string"
+    success_msg: "Variable '{{ __t_var }}' defined properly - value: '{{ lookup('ansible.builtin.vars', __t_var) }}'"
+    fail_msg: "Variable '{{ __t_var }}' failed to validate"
+    quiet: '{{ _sat_quiet_assert | default(false) }}'
+  loop:
+    - '_sat_quiet_assert'
+  loop_control:
+    loop_var: '__t_var'
+
+- name: 'assert | Ensure boolean variables are defined properly'
+  ansible.builtin.assert:
+    that:
+      - "lookup('ansible.builtin.vars', __t_var) is defined"
+      - "lookup('ansible.builtin.vars', __t_var) is boolean"
+      - "lookup('ansible.builtin.vars', __t_var) | bool | string == lookup('ansible.builtin.vars', __t_var) | string"
+    success_msg: "Variable '{{ __t_var }}' defined properly - value: '{{ lookup('ansible.builtin.vars', __t_var) }}'"
+    fail_msg: "Variable '{{ __t_var }}' failed to validate"
+    quiet: '{{ _sat_quiet_assert }}'
+  loop:
+    - '_satellite_validate_certs'
+  loop_control:
+    loop_var: '__t_var'
+
+- name: 'assert | Ensure string variables are defined properly'
+  ansible.builtin.assert:
+    that:
+      - "lookup('ansible.builtin.vars', __t_var) is defined"
+      - "lookup('ansible.builtin.vars', __t_var) is string"
+      - "lookup('ansible.builtin.vars', __t_var) != None"
+      - "lookup('ansible.builtin.vars', __t_var) != ''"
+    success_msg: "Variable '{{ __t_var }}' defined properly - value: '{{ lookup('ansible.builtin.vars', __t_var) }}'"
+    fail_msg: "Variable '{{ __t_var }}' failed to validate"
+    quiet: '{{ _sat_quiet_assert }}'
+  loop:
+    - '_satellite_server_url'
+  loop_control:
+    loop_var: '__t_var'
+
+- name: 'assert | Ensure secret string variables are defined properly'
+  ansible.builtin.assert:
+    that:
+      - "lookup('ansible.builtin.vars', __t_var) is defined"
+      - "lookup('ansible.builtin.vars', __t_var) is string"
+      - "lookup('ansible.builtin.vars', __t_var) != None"
+      - "lookup('ansible.builtin.vars', __t_var) != ''"
+    success_msg: "Variable '{{ __t_var }}' defined properly - value: '{{ lookup('ansible.builtin.vars', __t_var) }}'"
+    fail_msg: "Variable '{{ __t_var }}' failed to validate"
+    quiet: '{{ _sat_quiet_assert }}'
+  no_log: true
+  loop:
+    - '_satellite_password'
+    - '_satellite_username'
+  loop_control:
+    loop_var: '__t_var'
+
+- name: 'assert | Ensure Satellite server URL has a valid scheme (http/https) set'
+  ansible.builtin.assert:
+    that:
+      - "_satellite_server_url | ansible.builtin.urlsplit('scheme') is search('^https?$')"
+    success_msg: 'Variable _satellite_server_url has a valid scheme set.'
+    fail_msg: 'Variable _satellite_server_url has no valid scheme (http/https) set.'
+    quiet: '{{ _sat_quiet_assert }}'
+
+- name: 'assert | Ensure list variables are defined properly'
+  ansible.builtin.assert:
+    that:
+      - "lookup('ansible.builtin.vars', __t_var) is defined"
+      - "lookup('ansible.builtin.vars', __t_var) | list | string == lookup('ansible.builtin.vars', __t_var) | string"
+      - "lookup('ansible.builtin.vars', __t_var) is sequence"
+    success_msg: "Variable '{{ __t_var }}' defined properly"
+    fail_msg: "Variable '{{ __t_var }}' failed to validate"
+    quiet: '{{ _sat_quiet_assert }}'
+  loop:
+    - '_sat_users'
+  loop_control:
+    loop_var: '__t_var'
+
+- name: 'assert | Ensure mandatory attributes for the Smart Proxies are defined properly'
+  ansible.builtin.assert:
+    that:
+      # all item's login attribute is defined
+      - >-
+        _sat_users |
+        selectattr('login', 'undefined') |
+        length == 0
+
+      # all item's login attribute is a string
+      - >-
+        _sat_users |
+        selectattr('login', 'string') |
+        length
+        ==
+        _sat_users |
+        length
+
+      # all item's login attribute is not empty
+      - >-
+        _sat_users |
+        selectattr('login', '==', '') |
+        length == 0
+
+      # all item's login attribute is not None
+      - >-
+        _sat_users |
+        selectattr('login', 'match', 'None') |
+        length == 0
+
+    success_msg: 'All users are defined properly'
+    fail_msg: 'One or users failed to validate'
+    quiet: '{{ _sat_quiet_assert }}'
+...

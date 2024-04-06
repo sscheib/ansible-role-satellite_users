@@ -1,0 +1,19 @@
+---
+# Smart Proxies to manage
+_sat_users: '{{ sat_users | ansible.builtin.mandatory }}'
+
+# username to authenticate with against the Satellite API
+_satellite_username: '{{ satellite_username | default(None) }}'
+
+# password of the user to authenticate with against the Satellite API
+_satellite_password: '{{ satellite_password | default(None) }}'
+
+# URL to the Satellite API (including http/s://)
+_satellite_server_url: '{{ satellite_server_url | default(None) }}'
+
+# whether to validate certificates when connecting to the Satellite API
+_satellite_validate_certs: '{{ satellite_validate_certs | default(_def_satellite_validate_certs) }}'
+
+# whether to quiet assert
+_sat_quiet_assert: '{{ sat_quiet_assert | default(_def_sat_quiet_assert) }}'
+...

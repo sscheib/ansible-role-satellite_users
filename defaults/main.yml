@@ -1,0 +1,7 @@
+---
+# whether to validate certificates when connecting to the Satellite API
+_def_satellite_validate_certs: true
+
+# whether to quiet assert statements
+_def_sat_quiet_assert: false
+...

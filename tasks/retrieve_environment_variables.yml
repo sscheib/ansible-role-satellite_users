@@ -1,0 +1,67 @@
+---
+- name: 'retrieve_environment_variables | Retrieve the Satellite server URL from environment variables'
+  ansible.builtin.set_fact:
+    _satellite_server_url: >-
+      {{
+        lookup('ansible.builtin.env', 'SATELLITE_SERVER_URL', 'SATELLITE_SERVER', 'SATELLITE_URL') |
+        ansible.builtin.split(',') |
+        reject('==', '') |
+        ansible.builtin.unique
+      }}
+  when: >-
+    lookup('ansible.builtin.env', 'SATELLITE_SERVER_URL', 'SATELLITE_SERVER', 'SATELLITE_URL') |
+    ansible.builtin.split(',') |
+    reject('==', '') |
+    ansible.builtin.unique |
+    length > 0
+
+- name: 'retrieve_environment_variables | Retrieve the Satellite user from environment variables'
+  ansible.builtin.set_fact:
+    _satellite_username: >-
+      {{
+        lookup('ansible.builtin.env', 'SATELLITE_USERNAME', 'SATELLITE_USER') |
+        ansible.builtin.split(',') |
+        reject('==', '') |
+        ansible.builtin.unique
+      }}
+  when: >-
+    lookup('ansible.builtin.env', 'SATELLITE_USERNAME', 'SATELLITE_USER') |
+    ansible.builtin.split(',') |
+    reject('==', '') |
+    ansible.builtin.unique |
+    length > 0
+
+- name: 'retrieve_environment_variables | Retrieve the Satellite password from environment variables'
+  ansible.builtin.set_fact:
+    _satellite_password: >-
+      {{
+        lookup('ansible.builtin.env', 'SATELLITE_PASSWORD') |
+        ansible.builtin.split(',') |
+        reject('==', '') |
+        ansible.builtin.unique
+      }}
+  when: >-
+    lookup('ansible.builtin.env', 'SATELLITE_PASSWORD') |
+    ansible.builtin.split(',') |
+    reject('==', '') |
+    ansible.builtin.unique |
+    length > 0
+
+- name: >-
+    retrieve_environment_variables | Retrieve the environment variable which defines whether to validate
+    certificates when connecting to Satellite
+  ansible.builtin.set_fact:
+    _satellite_validate_certs: >-
+      {{
+        lookup('ansible.builtin.env', 'SATELLITE_VALIDATE_CERTS') |
+        ansible.builtin.split(',') |
+        reject('==', '') |
+        ansible.builtin.unique
+      }}
+  when: >-
+    lookup('ansible.builtin.env', 'SATELLITE_VALIDATE_CERTS') |
+    ansible.builtin.split(',') |
+    reject('==', '') |
+    ansible.builtin.unique |
+    length > 0
+...

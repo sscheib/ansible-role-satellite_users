@@ -1,0 +1,32 @@
+---
+- name: 'Include tasks to retrieve environment variables for connecting to Satellite'
+  ansible.builtin.include_tasks:
+    file: 'retrieve_environment_variables.yml'
+  # include only when either of the below variables is not defined
+  when: >-
+    (
+      _satellite_server_url is not defined
+      or _satellite_server_url == ''
+      or _satellite_server_url == None
+    ) or (
+      _satellite_username is not defined
+      or _satellite_username == ''
+      or _satellite_username == None
+    ) or (
+      _satellite_password is not defined
+      or _satellite_password == ''
+      or _satellite_password == None
+    ) or (
+      _satellite_validate_certs is not defined
+      or _satellite_validate_certs == ''
+      or _satellite_validate_certs == None
+    )
+
+- name: 'Include tasks to ensure variables are defined properly'
+  ansible.builtin.include_tasks:
+    file: 'assert.yml'
+
+- name: 'Include tasks to manage Users'
+  ansible.builtin.include_tasks:
+    file: 'users.yml'
+...
