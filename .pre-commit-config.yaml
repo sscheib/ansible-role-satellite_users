@@ -10,7 +10,7 @@ ci:
 
 repos:
   - repo: 'https://github.com/ansible/ansible-lint'
-    rev: 'v24.10.0'
+    rev: 'v24.12.2'
     hooks:
       - name: 'ansible-lint'
         additional_dependencies:
