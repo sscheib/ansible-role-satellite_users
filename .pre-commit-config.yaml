@@ -10,7 +10,7 @@ ci:
 
 repos:
   - repo: 'https://github.com/ansible/ansible-lint'
-    rev: 'v25.1.0'
+    rev: 'v25.1.1'
     hooks:
       - name: 'ansible-lint'
         additional_dependencies:
@@ -67,7 +67,7 @@ repos:
         verbose: true
 
   - repo: 'https://github.com/igorshubovych/markdownlint-cli'
-    rev: 'v0.43.0'
+    rev: 'v0.44.0'
     hooks:
       - id: 'markdownlint'
         verbose: true
