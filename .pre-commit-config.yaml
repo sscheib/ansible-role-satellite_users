@@ -53,14 +53,14 @@ repos:
           - '--markdown-linebreak-ext=md'
 
   - repo: 'https://github.com/adrienverge/yamllint.git'
-    rev: 'v1.35.1'
+    rev: 'v1.36.2'
     hooks:
       - id: 'yamllint'
         pass_filenames: true
         verbose: true
 
   - repo: 'https://github.com/tcort/markdown-link-check.git'
-    rev: 'v3.13.6'
+    rev: 'v3.13.7'
     hooks:
       - id: 'markdown-link-check'
         pass_filenames: true
